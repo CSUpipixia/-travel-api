@@ -12,7 +12,7 @@ import static org.csu.travel.result.ResultFactory.buildSuccessResult;
 @Controller
 public class WXTestController {
     /**
-     * 控制器，前后端分离用的不同协议和端口，所以需要加入@CrossOrigin支持跨域。
+     * 控制器，前后端分离用的不同协议和端口，加入@CrossOrigin支持跨域。
      */
     @CrossOrigin
     @RequestMapping(value = "/wx/test", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
