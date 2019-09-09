@@ -43,7 +43,7 @@ public class WXUserController {
         return applicationService.getDoneApplicationListByUser(userId);
     }
 
-    @GetMapping("/pages/applications")
+    @GetMapping("/pages/application")
     public List<Application> departmentApplications(@PathVariable("department") String department) {
         return applicationService.getApplicationByDepartment(department);
     }
