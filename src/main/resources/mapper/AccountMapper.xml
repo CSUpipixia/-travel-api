@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.csu.travel.persistence.AccountMapper">
+
+    <select id="getAccountByUsername" parameterType="String" resultType="org.csu.travel.domain.Account">
+        select userid as usename,name,email,phonenumber as phoneNum
+        from account
+        where userid = #{username}
+    </select>
+
+    <select id="getAccountByUsernameAndPassword" parameterType="org.csu.travel.domain.Account" resultType="org.csu.travel.domain.Account">
+        select account.userid as username,account.password,position.budget,position.authority,openid
+        from account,position
+        where username = #{username}
+          and account.password = #{password}
+          and position.position = account.position
+    </select>
+
+    <update id="updateAccount" parameterType="org.csu.travel.domain.Account">
+        update account set
+          email = #{email}
+          phonenumber = #{phonenumber}
+        where userid = #{username}
+    </update>
+    
+    <update id="updatePassword" parameterType="org.csu.travel.domain.Account">
+        update account set
+          password = #{password}
+        where userid = #{usename}
+    </update>
+
+    <update id="updateOpenid" parameterType="org.csu.travel.domain.Account">
+        update account set
+          openid = #{openid}
+        where  userid = #{usename}
+    </update>
+
+
+
+</mapper>

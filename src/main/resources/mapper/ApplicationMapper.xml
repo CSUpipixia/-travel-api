@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.travel.persistence.ApplicationMapper">
+    <insert id="addApplication" parameterType="org.csu.travel.domain.Application">
+        insert into tripapply(applicant_id, applicant_name, applicant_position, applicant_department, startdate, duration,destination
+          , reason, status, apply_date)
+        values(#{applicant_id}, #{applicant_name}, #{applicant_position}, #{applicant_department} , #{startdate,jdbcType=TIMESTAMP}
+          , #{duration}, #{destination}, #{reason}, #{status}, now())
+    </insert>
+
+    <update id="updateApplication" parameterType="org.csu.travel.domain.Application">
+        update tripapply set
+          startdate = #{startDate,jdbcType=TIMESTAMP},duration = #{duration}, origin = #{origin},
+          destination = #{destination},reason = #{reason}, status = #{status}, apply_date = now()
+         where applynumber = #{application_id}
+    </update>
+
+    <update id="updateAudit" parameterType="org.csu.travel.domain.Application">
+        update tripapply set
+          auditor_id = auditorId, auditor_name = auditorName, suggest = suggest, status = #{status}
+        where applynumber = #{application_id}
+    </update>
+
+    <update id="updateGenAudit" parameterType="org.csu.travel.domain.Application">
+        update tripapply set
+          generalauditor_id = #{genAuditorId}, generalauditor_name = #{genAuditorName},
+          status = #{status}, suggest = #{suggest}
+        where applynumber = #{application_id}
+    </update>
+
+    <delete id="deleteApplication" parameterType="String">
+        delete from tripapply
+        where applynumber = #{applynumber}
+    </delete>
+
+    <select id="getApplicationByNum" parameterType="int" resultType="org.csu.travel.domain.Application">
+        select
+          applynumber as application_id, applicant_id,applicant_name,applicant_position,
+          applicant_department, startdate as startDate, duration, origin, destination, reason,
+          auditor_id as auditorId, auditor_name as auditorName,
+          generalauditor_id as genAuditorId,
+          generalauditor_name as genAuditorName,
+          suggest, vehicle, status, apply_date as applyDate
+        from tripapply
+        where applynumber = #{applicationId}
+    </select>
+
+    <select id="getApplicationByUsername" parameterType="String" resultType="java.util.List">
+        select
+          applynumber as application_id, applicant_id,applicant_name,applicant_position,
+          applicant_department, startdate as startDate, duration, origin, destination, reason,
+          auditor_id as auditorId, auditor_name as auditorName,
+          generalauditor_id as genAuditorId,
+          generalauditor_name as genAuditorName,
+          suggest, vehicle, status, apply_date as applyDate
+        from tripapply
+        where status != 7 and applicant_id = #{username}
+        order by applyDate desc
+    </select>
+
+    <select id="getApplicationByDepartment" resultType="java.util.List">
+        select
+          applynumber as application_id, applicant_id,applicant_name,applicant_position,
+          applicant_department, startdate as startDate, duration, origin, destination, reason,
+          auditor_id as auditorId, auditor_name as auditorName,
+          generalauditor_id as genAuditorId,
+          generalauditor_name as genAuditorName,
+          suggest, vehicle, status, apply_date as applyDate
+        from tripapply
+        where applicant_department = #{0} status = #{1}
+        order by applyDate desc
+    </select>
+
+    <select id="getApplicationByStatusAndUsername" parameterType="String" resultType="java.util.List">
+        select
+          applynumber as application_id, applicant_id,applicant_name,applicant_position,
+          applicant_department, startdate as startDate, duration, origin, destination, reason,
+          auditor_id as auditorId, auditor_name as auditorName,
+          generalauditor_id as genAuditorId,
+          generalauditor_name as genAuditorName,
+          suggest, vehicle, status, apply_date as applyDate
+        from tripapply
+        where status = 7 and applicant_id = #{username}
+        order by applyDate desc
+    </select>
+
+    <select id="getApplicationByTime" resultType="java.util.List">
+        select
+          applynumber as application_id, applicant_id,applicant_name,applicant_position,
+          applicant_department, startdate as startDate, duration, origin, destination, reason,
+          auditor_id as auditorId, auditor_name as auditorName,
+          generalauditor_id as genAuditorId,
+          generalauditor_name as genAuditorName,
+          suggest, vehicle, status, apply_date as applyDate
+        from tripapply
+        where startdate between #{0,jdbcType=TIMESTAMP} and #{1,jdbcType=TIMESTAMP}
+        order by startdate desc
+    </select>
+
+    <select id="getApplicationByStatus" parameterType="int" resultType="java.util.List">
+        select
+          applynumber as application_id, applicant_id,applicant_name,applicant_position,
+          applicant_department, startdate as startDate, duration, origin, destination, reason,
+          auditor_id as auditorId, auditor_name as auditorName,
+          generalauditor_id as genAuditorId,
+          generalauditor_name as genAuditorName,
+          suggest, vehicle, status, apply_date as applyDate
+        from tripapply
+        where status = #{status}
+    </select>
+</mapper>

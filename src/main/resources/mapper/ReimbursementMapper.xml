@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.csu.travel.persistence.ReimbursementMapper">
+
+    <insert id="addReimbursement" parameterType="org.csu.travel.domain.Reimbursement">
+        insert into reimbursement(applynumber, picture, cost, applicant_id, applicant_name, status, apply_date)
+        values (#{applicationId}, #{picture}, #{cost}, #{applicantId}, #{applicantName}, 1, now())
+    </insert>
+
+    <delete id="deleteReimbursement" parameterType="org.csu.travel.domain.Reimbursement">
+        delete from reimbursement
+        where applynumber = #{applicationId} and picture = #{picture}
+    </delete>
+
+    <update id="updateAudit" parameterType="org.csu.travel.domain.Reimbursement">
+        update reimbursement set
+          auditor_id = #{auditorId}, auditor_name = #{auditorName}
+          , suggest = #{suggest}， status = #{status}
+        where applynumber = #{applicationId} and picture = #{picture}
+    </update>
+
+    <update id="updateGenAudit" parameterType="org.csu.travel.domain.Reimbursement">
+        update reimbursement set
+          genauditor_id = #{genAuditorId}, genauditor_name = #{genAuditorName}, suggest = #{suggest},
+          status = #{status}
+        where applynumber = #{applicationId} and picture = #{picture}
+    </update>
+
+    <update id="updateReimburse" parameterType="org.csu.travel.domain.Reimbursement">
+        update reimbursement set
+          picture = #{0.picture}, cost = #{0.cost}, apply_date = now()
+        where applynumber = #{0.applicationId} and picture = #{1}
+    </update>
+
+    <select id="getReimbursementsByApplicationIdAndPicture" parameterType="org.csu.travel.domain.Reimbursement">
+        select
+          applynumber as applicationId, picture, applicant_id as applicantId, applicant_name as applicantName,
+          cost, auditor_id as auditorId, auditor_name as auditorName, genauditor_id as genAuditorId,
+          genauditor_name as genAuditorName, suggest, status, apply_date as applyDate
+        from reimbursement
+        where applynumber = #{applicationId} and picture = #{picture}
+    </select>
+
+    <select id="getReimbursementsByApplicationId" parameterType="int" resultType="java.util.List">
+        select
+          applynumber as applicationId, picture, applicant_id as applicantId, applicant_name as applicantName,
+          cost, auditor_id as auditorId, auditor_name as auditorName, genauditor_id as genAuditorId,
+          genauditor_name as genAuditorName, suggest, status, apply_date as applyDate
+        from reimbursement
+        where applynumber = #{applicationId}
+    </select>
+
+    <select id="getReimbursementsByApplicantId" parameterType="String" resultType="java.util.List">
+        select
+          applynumber as applicationId, picture, applicant_id as applicantId, applicant_name as applicantName,
+          cost, auditor_id as auditorId, auditor_name as auditorName, genauditor_id as genAuditorId,
+          genauditor_name as genAuditorName, suggest, status, apply_date as applyDate
+        from reimbursement
+        where applicant_id = #{applicantId}
+    </select>
+
+    <select id="getReimbursementsByStatus" parameterType="int" resultType="java.util.List">
+        select
+          applynumber as applicationId, picture, applicant_id as applicantId, applicant_name as applicantName,
+          cost, auditor_id as auditorId, auditor_name as auditorName, genauditor_id as genAuditorId,
+          genauditor_name as genAuditorName, suggest, status, apply_date as applyDate
+        from reimbursement
+        where status = #{status}
+    </select>
+
+</mapper>

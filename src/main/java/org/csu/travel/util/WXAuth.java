@@ -97,7 +97,7 @@ public class WXAuth {
     /**
      * 根据code获取openid, session_key, unionid
      */
-    private JSONObject getSessionKey(String code) throws JSONException {
+    public JSONObject getSessionKey(String code) throws JSONException {
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + app_id + "&secret="
                 + app_secret + "&js_code=" + code + "&grant_type=authorization_code";
         String result = GET(url);
